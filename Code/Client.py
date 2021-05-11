@@ -7,10 +7,10 @@ udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 dest = (HOST, PORT)
 
 controle = '%STOP%'
-print(f'Para sair digite {controle}\n')
+print(f'Para sair digite: {controle}\n')
 msg = input().encode('utf-8')
 
-while(msg != controle):
+while(msg != f'b"{controle}"'):
     udp.sendto (msg, dest)
     msg = input().encode('utf-8')
 udp.close()
