@@ -9,5 +9,6 @@ udp.bind(orig)
 
 while True:
     msg, cliente = udp.recvfrom(1024)
+    msg.decode('utf-8')
     print(cliente, msg)
 udp.close()
