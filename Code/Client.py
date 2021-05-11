@@ -8,7 +8,7 @@ dest = (HOST, PORT)
 
 controle = '0'
 print(f'Para sair digite: {controle}\n')
-msg = str(input()).encode('utf-8')
+msg = input().encode('utf-8')
 
 while True:
     if msg == controle:
