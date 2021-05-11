@@ -11,10 +11,8 @@ print(f'Para sair digite: {controle}\n')
 msg = input().encode('utf-8')
 
 while True:
-    if msg == controle:
-        break
-    udp.sendto (msg, dest)
+    udp.sendto(msg, dest)
     msg = input().encode('utf-8')
-print('Fechando Cliente')
+
 udp.close()
 print('Fim do processo')
