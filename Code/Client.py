@@ -27,5 +27,5 @@ while True:
 udp.close()
 
 finish = time.perf_counter()
-print(f'\033[1;33mClient desconectado\n-> O cliente ficou conectado por {round(finish-start), 2} segundos.')
+print(f'\033[1;33mCliente desconectado\n-> O cliente ficou conectado por {round(finish-start, 2)} segundos.')
 print('Fim do processo')
