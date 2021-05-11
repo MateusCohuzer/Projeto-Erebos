@@ -1,14 +1,18 @@
 import socket
 
-HOST = '127.0.0.1'
 PORT = 5000
+BUFFSIZE = 1024
 
-buffsize = 1024
 udp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-orig = (HOST, PORT)
+orig = (socket.gethostname(), PORT)
 udp.bind(orig)
+udp.listen(3)
 
 while True:
-    msg, cliente = udp.recvfrom(buffsize)
+    clientsocket, address = udp.accept()
+    print(f'Connection from {address} has been established!')
+    clientsocket.send(bytes("Welcome to the server!", 'utf-8'))
+    msg, cliente = udp.recvfrom(BUFFSIZE)
     msg.decode('utf-8')
-    print(cliente, msg)
+    print(f'{cliente}: {msg}')
+udp.close
