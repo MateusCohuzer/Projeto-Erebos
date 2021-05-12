@@ -10,6 +10,7 @@ def aceitaClientes():
             try:
                 clientsocket, address = udp.accept()
             finally:
+                global clientsocket, address
                 controle_thread += 1
                 print(f'Connection from {address} has been established!')
                 clientsocket.send(bytes("Bem vindo ao Servidor!", 'utf-8'))
