@@ -1,30 +1,37 @@
 import socket
 import threading
-
+import time
 
 def aceitaClientes():
-    global controle_thread, udp
+    global controle_thread, udp, limite_conexoes
     while True:
-        try:
-            clientsocket, address = udp.accept()
-            global clientsocket, address
-        finally:
-            controle_thread += 1
-            print(f'Connection from {address} has been established!')
-            clientsocket.send(bytes("Bem vindo ao Servidor!", 'utf-8'))
+        if controle_thread < limite_conexoes:
+            try:
+                clientsocket, address = udp.accept()
+            finally:
+                controle_thread += 1
+                print(f'Connection from {address} has been established!')
+                clientsocket.send(bytes("Bem vindo ao Servidor!", 'utf-8'))
+        else:
+            print('O limite de conexões foi feito.')
+            break
 
 
 PORT = 5000
 BUFFSIZE = 1024
 controle_thread = 0
+limite_conexoes = 3
 
 udp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (socket.gethostname(), PORT)
 udp.bind(orig)
-udp.listen(3)
+udp.listen(limite_conexoes)
 
 thread_aceitaClientes = threading.Thread(target=aceitaClientes)
 thread_aceitaClientes.start()
+
+while limite_conexoes == 0:
+    time.sleep(1)
 
 while True:
     try:
