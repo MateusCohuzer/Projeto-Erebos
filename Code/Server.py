@@ -1,4 +1,13 @@
 import socket
+import threading
+
+
+def aceitaClientes():
+    while True:
+        clientsocket, address = udp.accept()
+        print(f'Connection from {address} has been established!')
+        clientsocket.send(bytes("Bem vindo ao Servidor!", 'utf-8'))
+
 
 PORT = 5000
 BUFFSIZE = 1024
@@ -9,10 +18,10 @@ udp.bind(orig)
 udp.listen(3)
 
 while True:
-    clientsocket, address = udp.accept()
-    print(f'Connection from {address} has been established!')
-    clientsocket.send(bytes("Welcome to the server!", 'utf-8'))
-    msg, cliente = udp.recvfrom(BUFFSIZE)
-    msg.decode('utf-8')
-    print(f'{cliente}: {msg}')
-udp.close
+    try:
+        msg, cliente = udp.recvfrom(BUFFSIZE)
+        msg.decode('utf-8')
+        print(f'{cliente}: {msg}')
+    except:
+        break
+udp.close()
