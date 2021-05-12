@@ -2,6 +2,7 @@ import socket
 import threading
 import time
 
+
 def aceitaClientes():
     global controle_thread, udp, limite_conexoes
     while True:
