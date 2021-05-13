@@ -1,4 +1,9 @@
 import socket
 import threading
-import time
 
+
+
+HOST = ""
+PORT = 65000
+BUFSIZ = 1024
+ADDR = (HOST, PORT)
