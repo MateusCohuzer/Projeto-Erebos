@@ -21,8 +21,8 @@ BUFFSIZE = 1024
 controle_thread = 0
 limite_conexoes = 3
 
-clientsocket = 0
-address = 0
+clientsocket = ''
+address = ''
 
 udp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (socket.gethostname(), PORT)
