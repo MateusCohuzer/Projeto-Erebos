@@ -1,6 +1,5 @@
 import socket
 import threading
-import time
 
 
 def aceitaClientes():
@@ -22,8 +21,8 @@ BUFFSIZE = 1024
 controle_thread = 0
 limite_conexoes = 3
 
-clientsocket = ''
-address = ''
+clientsocket = 0
+address = 0
 
 udp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (socket.gethostname(), PORT)
@@ -32,9 +31,6 @@ udp.listen(limite_conexoes)
 
 thread_aceitaClientes = threading.Thread(target=aceitaClientes)
 thread_aceitaClientes.start()
-
-while controle_thread == 0:
-    time.sleep(1)
 
 while True:
     try:
