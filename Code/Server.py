@@ -32,7 +32,7 @@ udp.listen(limite_conexoes)
 thread_aceitaClientes = threading.Thread(target=aceitaClientes)
 thread_aceitaClientes.start()
 
-while controle_threads == 0:
+while controle_thread == 0:
     time.sleep(1)
 
 while True:
