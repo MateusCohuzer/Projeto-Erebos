@@ -3,11 +3,11 @@ import threading
 
 
 def aceitaClientes():
-    global controle_thread, udp, limite_conexoes, clientsocket, address
+    global controle_thread, tcp, limite_conexoes, clientsocket, address
     while True:
         if controle_thread < limite_conexoes:
             try:
-                clientsocket, address = udp.accept()
+                clientsocket, address = tcp.accept()
             finally:
                 controle_thread += 1
                 print(f'Connection from {address} has been established!')
@@ -24,19 +24,19 @@ limite_conexoes = 3
 clientsocket = ''
 address = ''
 
-udp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (socket.gethostname(), PORT)
-udp.bind(orig)
-udp.listen(limite_conexoes)
+tcp.bind(orig)
+tcp.listen(limite_conexoes)
 
 thread_aceitaClientes = threading.Thread(target=aceitaClientes)
 thread_aceitaClientes.start()
 
 while True:
     try:
-        msg, cliente = udp.recvfrom(BUFFSIZE)
+        msg, cliente = tcp.recvfrom(BUFFSIZE)
         msg.decode('utf-8')
         print(f'{cliente}: {msg}')
     except:
         break
-udp.close()
+tcp.close()
