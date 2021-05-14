@@ -41,7 +41,7 @@ clients = {}
 addresses = {}
 
 HOST = "127.0.0.1"
-PORT = 3301
+PORT = 33001
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
