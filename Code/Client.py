@@ -4,11 +4,9 @@ import threading
 
 
 def sendMsg(controle='0'):
-    while True:
-            SERVER.connect(ADDR)
-            start = time.perf_counter()
-            print('Client conectado ao servidor!')
-            break
+
+    start = time.perf_counter()
+    print('Client conectado ao servidor!')
 
     print(f'Para sair digite: {controle}\n')
 
@@ -36,9 +34,7 @@ BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
 SERVER = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-SERVER.bind(ADDR)
+SERVER.connect(ADDR)
 THREAD_SEND = threading.Thread(target=sendMsg(), args=(controle,))
 THREAD_SEND.start()
 THREAD_SEND.join()
-
-SERVER.close()

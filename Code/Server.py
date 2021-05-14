@@ -3,25 +3,21 @@ from threading import Thread
 
 
 def accept_connections(clients_control=1):
+    global name
     while True:
         client, client_address = SERVER.accept()
         name = f'Cliente-{clients_control}'
         clients_control += 1
+
         print(f'{name} está online.')
         addresses[client] = client_address
         Thread(target=handle_client, args=(client,)).start()
 
 
 def handle_client(client):
-    global name
-    client.send(bytes(f'Welcome, {name}!', "utf8"))
-    client.send(bytes("Agora você pode enviar mensagens !", "utf8"))
-    msg = f'{name} entrou no chat!'
-    broadcast(bytes(msg, "utf8"))
-    clients[client] = name
 
     while True:
-        msg = client.recv(BUFSIZ)
+        msg = client.recv(BUFSIZ).decode("utf8")
         if msg != bytes("{quit}", "utf8"):
             broadcast(msg, name + "")
         else:
