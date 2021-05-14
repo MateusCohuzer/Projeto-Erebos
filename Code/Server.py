@@ -2,17 +2,20 @@ import socket
 from threading import Thread
 
 
-def accept_connections():
+def accept_connections(clients_control=1):
     while True:
         client, client_address = SERVER.accept()
+        try:
+            name = f'Cliente-{clients_control}'
+            global name
+        finally:
+            clients_control += 1
         print(f'{client_address} está online.')
-        client.send(bytes("Qual o seu nome ?", "utf8"))
         addresses[client] = client_address
         Thread(target=handle_client, args=(client,)).start()
 
 
 def handle_client(client):
-    name = client.recv(BUFSIZ).decode("utf8")
     client.send(bytes(f'Welcome, {name}!', "utf8"))
     client.send(bytes("Agora você pode enviar mensagens !", "utf8"))
     msg = f'{name} entrou no chat!'
@@ -39,8 +42,8 @@ def broadcast(msg, prefix=""):
 clients = {}
 addresses = {}
 
-HOST = ""
-PORT = 65000
+HOST = "127.0.0.1"
+PORT = 3301
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
@@ -49,7 +52,7 @@ SERVER.bind(ADDR)
 
 if __name__ == "__main__":
     SERVER.listen(5)
-    print("Waiting for connection...")
+    print("Esperando conexões...")
     ACCEPT_THREAD = Thread(target=accept_connections)
     ACCEPT_THREAD.start()
     ACCEPT_THREAD.join()
