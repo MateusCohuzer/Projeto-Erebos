@@ -5,17 +5,15 @@ from threading import Thread
 def accept_connections(clients_control=1):
     while True:
         client, client_address = SERVER.accept()
-        try:
-            name = f'Cliente-{clients_control}'
-            global name
-        finally:
-            clients_control += 1
-        print(f'{client_address} está online.')
+        name = f'Cliente-{clients_control}'
+        clients_control += 1
+        print(f'{name} está online.')
         addresses[client] = client_address
         Thread(target=handle_client, args=(client,)).start()
 
 
 def handle_client(client):
+    global name
     client.send(bytes(f'Welcome, {name}!', "utf8"))
     client.send(bytes("Agora você pode enviar mensagens !", "utf8"))
     msg = f'{name} entrou no chat!'
