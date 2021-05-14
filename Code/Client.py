@@ -12,14 +12,31 @@ def sendMsg(controle='0'):
 
     while True:
         msg = input().encode('utf-8')
-        SERVER.sendto(msg, ADDR)
+        CLIENT.sendto(msg, ADDR)
         if msg.decode('utf-8') == controle:
             break
-    SERVER.close()
+    CLIENT.close()
 
     finish = time.perf_counter()
     print(f'\033[1;33mCliente desconectado\n-> O cliente ficou conectado por {round(finish-start, 2)} segundos.')
     print('Fim do processo')
+
+
+def recMsg():
+    while True:
+        try:
+            msg = CLIENT.recv(BUFSIZ).decode("utf8")
+            msg_split = msg.split("@")
+            print(msg_split)
+            if len(msg_split) > 1:
+                destino = msg_split[1]
+                print(destino)
+                print(msg_split)
+
+            if len(msg_split) == 1:
+                print(msg)
+        except OSError:
+            break
 
 
 controle = '0'
@@ -33,8 +50,8 @@ else:
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
-SERVER = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-SERVER.connect(ADDR)
+CLIENT = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+CLIENT.connect(ADDR)
 THREAD_SEND = threading.Thread(target=sendMsg(), args=(controle,))
 THREAD_SEND.start()
 THREAD_SEND.join()

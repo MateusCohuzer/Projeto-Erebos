@@ -19,7 +19,7 @@ def handle_client(client):
     while True:
         msg = client.recv(BUFSIZ).decode("utf8")
         if msg != bytes("{quit}", "utf8"):
-            broadcast(msg, name + "")
+            broadcast(msg)
         else:
             client.send(bytes("{quit}", "utf8"))
             client.close()
@@ -28,7 +28,8 @@ def handle_client(client):
             break
 
 
-def broadcast(msg, prefix=""):
+def broadcast(msg):
+    prefix = f'{name}: '
     for sock in clients:
         sock.send(bytes(prefix, "utf8") + msg)
 
