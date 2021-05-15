@@ -26,15 +26,7 @@ def recMsg():
     while True:
         try:
             msg = CLIENT.recv(BUFSIZ).decode("utf8")
-            msg_split = msg.split("@")
-            print(msg_split)
-            if len(msg_split) > 1:
-                destino = msg_split[1]
-                print(destino)
-                print(msg_split)
-
-            if len(msg_split) == 1:
-                print(msg)
+            print(msg)
         except OSError:
             break
 
