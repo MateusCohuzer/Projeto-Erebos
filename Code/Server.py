@@ -15,15 +15,15 @@ def accept_connections(clients_control=1):
 
 
 def handle_client(client):
-
     while True:
         msg = client.recv(BUFSIZ).decode("utf8")
-        SERVER.sendall(bytes(msg.encode('utf8')))
+        eccho(msg)
 
-'''def broadcast(msg):
+
+def eccho(msg):
     prefix = f'{name}: '
     for sock in clients:
-        sock.send(bytes(prefix, "utf8") + msg)'''
+        sock.send(bytes(prefix, "utf8") + msg)
 
 
 clients = {}

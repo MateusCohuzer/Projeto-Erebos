@@ -4,7 +4,7 @@ import threading
 
 
 def sendMsg(controle='0'):
-
+    global sincronia
     start = time.perf_counter()
     print('Client conectado ao servidor!')
 
@@ -14,6 +14,7 @@ def sendMsg(controle='0'):
         msg = input().encode('utf-8')
         CLIENT.sendto(msg, ADDR)
         if msg.decode('utf-8') == controle:
+            sincronia = True
             break
     CLIENT.close()
 
@@ -29,6 +30,8 @@ def recMsg():
             print(msg)
         except OSError:
             break
+        if sincronia:
+            break
 
 
 controle = '0'
@@ -38,6 +41,7 @@ if not PORT:
     PORT = 33001
 else:
     PORT = int(PORT)
+sincronia = False
 
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
