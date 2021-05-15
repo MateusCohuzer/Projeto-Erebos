@@ -20,10 +20,14 @@ def handle_client(client):
         eccho(msg)
 
 
-def eccho(msg):
-    prefix = f'{name}: '
-    for sock in clients:
-        sock.send(bytes(prefix, "utf8") + msg)
+def send_to_all(sock, message):
+    for socket in connected_list:
+        if socket != server_socket and socket != sock:
+            try:
+                socket.send(message)
+            except:
+                socket.close()
+                connected_list.remove(socket)
 
 
 clients = {}
