@@ -11,11 +11,11 @@ def username(msganswer):
 
 def format(msg, names, ipA, ipB, clientIP):
     msgFormat = ''
-    for i in range(0,len(names)):
+    for i in range(0, len(names)):
         if ipA[i] == clientIP[0] and ipB[i] == clientIP[1]:
             msgFormat += names[i] + ': '
             break
-    for i in range(1,len(msg)):
+    for i in range(1, len(msg)):
         if i != 0:
             msgFormat += msg[i]
     print(msgFormat)
@@ -68,7 +68,6 @@ ADDR = (HOST, PORT)
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server.bind(ADDR)
 print('Aguardando conexões...')
-
 ServerSideThread = threading.Thread(target=serverSide())
 ServerSideThread.start()
 ServerSideThread.join()
