@@ -11,11 +11,11 @@ def username(msganswer):
 
 def format(msg, names, ipA, ipB, clientIP):
     msgFormat = ''
-    for i in range(0,len(names),1):
+    for i in range(0,len(names)):
         if ipA[i] == clientIP[0] and ipB[i] == clientIP[1]:
             msgFormat += names[i] + ': '
             break
-    for i in range(1,len(msg),1):
+    for i in range(1,len(msg)):
         if i != 0:
             msgFormat += msg[i]
     print(msgFormat)
@@ -25,7 +25,13 @@ def format(msg, names, ipA, ipB, clientIP):
 def serverSide():
     global names, ipA, ipB, msgFormat
     while True:
-        msgBytes, clientIP = server.recvfrom(2048)
+        while True:
+            try:
+                msgBytes, clientIP = server.recvfrom(2048)
+                break
+            except:
+                pass
+
         msgAnswer = msgBytes.decode('utf8')
         msgFormat = ''
 
@@ -36,6 +42,15 @@ def serverSide():
             name = username(msgAnswer) + " entrou"
             print(name)
             server.sendto(name.encode('utf8'), (ipA[0], ipB[0]))
+
+        elif msgAnswer == '\033[1;31m>>USUÁRIO SE DESCONECTOU \033[m':
+            for i in range(0, len(names)):
+                if ipA[i] == clientIP[0] and ipB[i] == clientIP[1]:
+                    del names[i]
+                    del ipA[i]
+                    del ipB[i]
+                    print('Usuário removido com sucesso')
+
         else:
             for i in range(0, len(ipA)):
                 print(ipA[i], ipB[i])

@@ -5,13 +5,19 @@ from time import sleep
 from random import randint
 
 
+def getIP():
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    return ip_address
+
+
 def reciveMsg():
+    global kill_bool
     while True:
         msgBytes, serverIP = client.recvfrom(2048)
         print('\n' + msgBytes.decode('utf8'))
         if kill_bool:
             break
-        client.close()
 
 
 def clientSide(address):
@@ -24,21 +30,20 @@ def clientSide(address):
             sleep(0.0001)
             msgSend = input("MSG: ").capitalize()
             if msgSend == kill_var:
-                msgSend = f'\033[1;31m >>USUÁRIO SE DESCONECTOU \033[m'
+                msgSend = f'\033[1;31m>>USUÁRIO SE DESCONECTOU \033[m'
                 kill_bool = True
         msgSend = str(cont) + msgSend
         client.sendto(msgSend.encode('utf8'), address)
         cont += 1
         if kill_bool:
             break
-    client.close()
 
 
 cont = 0
 kill_var = '/exit'
 kill_bool = False
-HOST = "192.168.0.106"
-PORT = 12000
+HOST = getIP()
+PORT = 12000  # Porta desejada
 ADDR = (HOST, PORT)
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
