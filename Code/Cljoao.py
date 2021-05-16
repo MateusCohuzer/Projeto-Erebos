@@ -1,6 +1,7 @@
 import socket
 import threading
-
+from time import sleep
+from random import randint
 
 def reciveMsg():
     while True:
@@ -12,9 +13,11 @@ def clientSide(address):
     global cont
     while True:
         if cont == 0:
-            msgSend = input("Name: ").capitalize()
+            msgSend = input("Name: ")
+            msgSend = f'\033[1;3{randint(1,6)}m{msgSend}\033[m'
         else:
-            msgSend = input("\nMSG: ").capitalize()
+            sleep(0.0001)
+            msgSend = input("MSG: ").capitalize()
 
         msgSend = str(cont) + msgSend
         client.sendto(msgSend.encode('utf8'), address)
