@@ -62,8 +62,8 @@ def serverSide():
 
 
 names = []
-ipA = []
-ipB = []
+ipA = [] #IPv4
+ipB = [] #Port
 HOST = ''
 PORT = 12000
 ADDR = (HOST, PORT)
