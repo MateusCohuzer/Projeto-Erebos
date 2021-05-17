@@ -57,7 +57,7 @@ def serverSide():
                         del ipA[i]
                         del ipB[i]
                         print(msgFormat)
-                        print('Usuário removido com sucesso')
+                        print('Usuário desconectado com sucesso')
                         break
 
 
