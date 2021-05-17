@@ -40,7 +40,8 @@ def serverSide():
             ipB.append(clientIP[1])
             name = username(msgAnswer) + " entrou"
             print(name)
-            server.sendto(name.encode('utf8'), (ipA[0], ipB[0]))
+            for i in range(0, len(ipA)):
+                server.sendto(name.encode('utf8'), (ipA[i], ipB[i]))
 
         else:
             for i in range(0, len(ipA)):
