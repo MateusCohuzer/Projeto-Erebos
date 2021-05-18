@@ -51,6 +51,8 @@ def reciveMsg():
         elif flag == '2':
             msgBytes = msgBytes[1:]
             print('\n' + msgBytes)
+        else:
+            break
         if kill_bool:
             break
     print('fim da thread de recebimento')

@@ -57,6 +57,7 @@ def serverSide():
                     del ipA[i]
                     del ipB[i]
                     print(msgFormat)
+                    msgFormat = '2' + msgFormat
                     print('\033[31;mUsuário removido com sucesso')
                     if len(ipA) > 1:
                         for j in range(0, len(ipA)):
