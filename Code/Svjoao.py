@@ -2,6 +2,12 @@ import socket
 import threading
 
 
+def getIP():
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname) #IPv4
+    return ip_address
+
+
 def username(msganswer):
     name = ''
     for i in range(1, len(msganswer)):
@@ -64,7 +70,7 @@ def serverSide():
 names = []
 ipA = [] #IPv4
 ipB = [] #Port
-HOST = ''
+HOST = getIP()
 PORT = 12000
 ADDR = (HOST, PORT)
 
