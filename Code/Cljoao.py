@@ -31,17 +31,13 @@ def reciveMsg():
             escopo = msgBytes.split()
             msgBytes = escopo[0]
             print(f'escopo[0] = {msgBytes}')
-            msgBytes = msgBytes[0:-1]
-            print(f'msgBytes[0:-2] = {msgBytes}')
-            print(f'escopo[1:len(escopo)] = {escopo}')
-            escopo = bytes(escopo.encode('utf8'))
-            msgBytes = bytes(msgBytes.encode('utf8'))
-            msgBytes = crypto.decrypt(msgBytes).decode('utf8')
-            msgBytes = msgBytes + ':'
-            for i in range(len(escopo)):
-                escopo[i] = crypto.decrypt(escopo[i]).decode('utf8')
-            for i in range(len(escopo)):
-                msgBytes += escopo[i]
+            escopo2 = escopo[1]
+            print(f'escopo = {escopo}')
+            print(f'escopo2 = {escopo2}')
+            escopo2 = escopo2.decode('utf8')
+            escopo2 = crypto.decrypt(escopo2)
+            print('3scopo2 = ', escopo2)
+            msgBytes += escopo2
             print('\n', msgBytes)
         cont_server += 1
 
@@ -59,10 +55,11 @@ def clientSide(address):
         else:
             sleep(0.001)
             msgSend = input('MSG: ')
-            msgSend = f' {crypto.encrypt(bytes(msgSend.encode("utf8")))}'
             if msgSend == kill_var:
                 msgSend = ' ' + f'\033[1;31m>>USUÁRIO SE DESCONECTOU \033[m'
                 kill_bool = True
+            else:
+                msgSend = f' {crypto.encrypt(bytes(msgSend.encode("utf8")))}'
         client.sendto(msgSend.encode("utf8"), address)
         cont_client += 1
         if kill_bool:
