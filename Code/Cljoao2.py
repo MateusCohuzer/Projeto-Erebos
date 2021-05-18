@@ -41,6 +41,7 @@ def clientSide(address):
 cont = 0
 kill_var = ' /exit'
 kill_bool = False
+#Local machine
 HOST = getIP()
 PORT = 12000  # Porta desejada
 ADDR = (HOST, PORT)
