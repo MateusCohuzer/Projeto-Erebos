@@ -19,28 +19,44 @@ def crypto_tolls():
 
 
 def reciveMsg():
-    global kill_bool, cont_server, crypto, msgBytes, BUFFSIZE, escopo
+    global kill_bool, crypto, msgBytes, BUFFSIZE, escopo
     while True:
-        msgBytes, serverIP = client.recvfrom(BUFFSIZE)
+        if kill_bool:
+            break
+        while True:
+            try:
+                msgBytes, clientIP = client.recvfrom(BUFFSIZE)
+                break
+            except:
+                pass
+        if kill_bool:
+            break
         msgBytes = msgBytes.decode('utf8')
-        if cont_server == 0:
-            print('\n' + msgBytes)
-
-        if cont_server > 0:
-            print(f'linha 31-msgBytes = {msgBytes}')
+        flag = msgBytes[0]
+        if flag == '0':
+            msgBytes = msgBytes[2:]
+            msgBytes = msgBytes.replace("'", '')
             escopo = msgBytes.split()
-            msgBytes = escopo[0]
-            print(f'escopo[0] = {msgBytes}')
-            escopo2 = escopo[1]
-            print(f'escopo = {escopo}')
-            print(f'escopo2 = {escopo2}')
-            escopo2 = escopo2.decode('utf8')
-            escopo2 = crypto.decrypt(escopo2)
-            print('3scopo2 = ', escopo2)
-            msgBytes += escopo2
-            print('\n', msgBytes)
-        cont_server += 1
-
+            msgBytes = escopo[0] #name
+            escopo2 = escopo[1] #msg
+            msgBytes = bytes(msgBytes.encode('utf8'))
+            escopo3 = crypto.decrypt(msgBytes)
+            msgBytes = escopo3.decode('utf8') + ' ' + escopo2
+            print(f'\n{msgBytes}')
+        elif flag == '1':
+            msgBytes = msgBytes[2:]
+            msgBytes = msgBytes.replace("'", '')
+            escopo = msgBytes.split()
+            msgBytes = escopo[0]  # name
+            escopo2 = escopo[1]  # msg
+            escopo2 = escopo2[1:]
+            escopo2 = escopo2.replace("'", '')
+            msgBytes = bytes(msgBytes.encode('utf8'))
+            escopo2 = bytes(escopo2.encode('utf8'))
+            escopo3 = crypto.decrypt(msgBytes)
+            escopo4 = crypto.decrypt(escopo2)
+            msgBytes = str(escopo3.decode('utf8')) + ': ' + str(escopo4.decode('utf8'))
+            print(f'\n{msgBytes}')
         if kill_bool:
             break
 
@@ -51,7 +67,9 @@ def clientSide(address):
     while True:
         if cont_client == 0:
             msgSend = input("Name: ")
-            msgSend = '0' + f'\033[1;3{randint(1, 6)}m{msgSend}\033[m'
+            msgSend = f'\033[1;3{randint(1, 6)}m{msgSend}\033[m'
+            msgSend = bytes(msgSend.encode('utf8'))
+            msgSend = '0' + str(crypto.encrypt(msgSend))
         else:
             sleep(0.001)
             msgSend = input('MSG: ')
@@ -70,7 +88,7 @@ def clientSide(address):
 
 cont_client = 0
 cont_server = 0
-kill_var = ' /exit'
+kill_var = '/exit'
 kill_bool = False
 #Local machine
 HOST = getIP()

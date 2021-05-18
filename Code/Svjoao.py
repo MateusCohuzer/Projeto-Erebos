@@ -19,14 +19,14 @@ def format(msg, names, ipA, ipB, clientIP):
     msgFormat = ''
     for i in range(0, len(names)):
         if ipA[i] == clientIP[0] and ipB[i] == clientIP[1]:
-            msgFormat += names[i] + ': '
+            msgFormat += names[i]
             break
     msgFormat = msgFormat + msg[0:len(msg)]
     return msgFormat
 
 
 def serverSide():
-    global names, ipA, ipB, msgFormat, x
+    global names, ipA, ipB, msgFormat
     while True:
         if len(ipA) == 0:
             print('Aguardando conexões...')
@@ -44,7 +44,7 @@ def serverSide():
             names.append(username(msgAnswer))
             ipA.append(clientIP[0])
             ipB.append(clientIP[1])
-            name = username(msgAnswer) + " entrou"
+            name = '0' + username(msgAnswer) + " entrou"
             print(name)
             for i in range(0, len(ipA)):
                 server.sendto(name.encode('utf8'), (ipA[i], ipB[i]))
@@ -53,6 +53,7 @@ def serverSide():
             for i in range(0, len(ipA)):
                 print(ipA[i], ipB[i])
                 msgFormat = format(msgAnswer, names, ipA, ipB, clientIP)
+                msgFormat = '1' + msgFormat
                 print(msgFormat)
                 server.sendto(msgFormat.encode('utf8'), (ipA[i], ipB[i]))
 
