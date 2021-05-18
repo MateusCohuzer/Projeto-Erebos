@@ -1,4 +1,4 @@
-# EXECUTAR COM UMA IDE DEDICADA (EX: VSCODE, PYCHARM, ATOM...) PARA VER OS NOMES COLORIDOS
+# EXECUTAR COM UMA IDE DEDICADA (EX: PYCHARM, VSCODE, ATOM...) PARA UM MELHOR FUNCIONAMENTO DO PROGRAMA
 import socket
 import threading
 from time import sleep, perf_counter
@@ -21,24 +21,15 @@ def crypto_tolls():
 def reciveMsg():
     global kill_bool, crypto, msgBytes, BUFFSIZE, escopo
     while True:
-        if kill_bool:
-            break
-        while True:
-            try:
-                msgBytes, clientIP = client.recvfrom(BUFFSIZE)
-                break
-            except:
-                pass
-        if kill_bool:
-            break
+        msgBytes, clientIP = client.recvfrom(BUFFSIZE)
         msgBytes = msgBytes.decode('utf8')
         flag = msgBytes[0]
         if flag == '0':
             msgBytes = msgBytes[2:]
             msgBytes = msgBytes.replace("'", '')
             escopo = msgBytes.split()
-            msgBytes = escopo[0] #name
-            escopo2 = escopo[1] #msg
+            msgBytes = escopo[0]  # name
+            escopo2 = escopo[1]  # msg
             msgBytes = bytes(msgBytes.encode('utf8'))
             escopo3 = crypto.decrypt(msgBytes)
             msgBytes = escopo3.decode('utf8') + ' ' + escopo2
@@ -57,16 +48,20 @@ def reciveMsg():
             escopo4 = crypto.decrypt(escopo2)
             msgBytes = str(escopo3.decode('utf8')) + ': ' + str(escopo4.decode('utf8'))
             print(f'\n{msgBytes}')
+        elif flag == '2':
+            msgBytes = msgBytes[1:]
+            print('\n' + msgBytes)
         if kill_bool:
             break
+    print('fim da thread de recebimento')
 
 
 def clientSide(address):
-    global cont_client, kill_var, kill_bool, crypto
-    start = perf_counter()
+    global cont_client, kill_var, kill_bool, crypto, start
     while True:
         if cont_client == 0:
             msgSend = input("Name: ")
+            start = perf_counter()
             msgSend = f'\033[1;3{randint(1, 6)}m{msgSend}\033[m'
             msgSend = bytes(msgSend.encode('utf8'))
             msgSend = '0' + str(crypto.encrypt(msgSend))
@@ -74,7 +69,8 @@ def clientSide(address):
             sleep(0.001)
             msgSend = input('MSG: ')
             if msgSend == kill_var:
-                msgSend = ' ' + f'\033[1;31m>>USUÁRIO SE DESCONECTOU \033[m'
+                msgSend = '2' + f'\033[1;31mO USUÁRIO SE DESCONECTOU \033[m'
+                print(msgSend[1:])
                 kill_bool = True
             else:
                 msgSend = f' {crypto.encrypt(bytes(msgSend.encode("utf8")))}'

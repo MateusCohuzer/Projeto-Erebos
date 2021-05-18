@@ -49,6 +49,19 @@ def serverSide():
             for i in range(0, len(ipA)):
                 server.sendto(name.encode('utf8'), (ipA[i], ipB[i]))
 
+        elif msgAnswer[0] == '2':
+            for i in range(0, len(ipA)):
+                if ipA[i] == clientIP[0] and ipB[i] == clientIP[1]:
+                    msgFormat = f'\033[1;31m O USUÁRIO {names[i]}'+msgAnswer[18:]
+                    del names[i]
+                    del ipA[i]
+                    del ipB[i]
+                    print(msgFormat)
+                    print('\033[31;mUsuário removido com sucesso')
+                    if len(ipA) > 1:
+                        for j in range(0, len(ipA)):
+                            server.sendto(msgFormat.encode('utf8'), (ipA[i], ipB[i]))
+                    break
         else:
             for i in range(0, len(ipA)):
                 print(ipA[i], ipB[i])
@@ -57,15 +70,6 @@ def serverSide():
                 print(msgFormat)
                 server.sendto(msgFormat.encode('utf8'), (ipA[i], ipB[i]))
 
-            if msgAnswer == ' ' + '\033[1;31m>>USUÁRIO SE DESCONECTOU \033[m':
-                for i in range(0, len(ipA)):
-                    if ipA[i] == clientIP[0] and ipB[i] == clientIP[1]:
-                        del names[i]
-                        del ipA[i]
-                        del ipB[i]
-                        print(msgFormat)
-                        print('Usuário removido com sucesso')
-                        break
 
 
 names = []
