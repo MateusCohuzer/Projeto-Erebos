@@ -1,7 +1,7 @@
 # EXECUTAR COM UMA IDE DEDICADA (EX: VSCODE, PYCHARM, ATOM...) PARA VER OS NOMES COLORIDOS
 import socket
 import threading
-from time import sleep
+from time import sleep, perf_counter
 from random import randint
 from cryptography.fernet import Fernet
 
@@ -11,11 +11,8 @@ def getIP():
     return ip_address
 
 
-def crypto_tolls(x):
-    if x%2 == 0:
-        key = b'n05rzNJNF-tU4H-oCneuEdDxR4_fCL_wAgsy9CmB7Jk='
-    else:
-        key = b'T2xPK9saUIDXn3yDRd5YxzhVu0_nlMwcz7jfnIelkes='
+def crypto_tolls():
+    key = b'n05rzNJNF-tU4H-oCneuEdDxR4_fCL_wAgsy9CmB7Jk='
     fernet = Fernet(key)
     return fernet
 
@@ -23,20 +20,17 @@ def crypto_tolls(x):
 def reciveMsg():
     global kill_bool, cont_server, crypto, msgBytes, BUFFSIZE
     while True:
-        if cont_server == 0:
-            msgBytes, serverIP = client.recvfrom(BUFFSIZE)
-            crypto = crypto_tolls(msgBytes.decode('utf8'))
-            cont_server += 1
-        elif cont_server == 1:
-            print('\n', msgBytes.decode('utf8'))
         msgBytes, serverIP = client.recvfrom(BUFFSIZE)
-        print('\n', crypto.decrypt(msgBytes.decode('utf8')))
+        msgBytes = bytes(msgBytes)
+        msgBytes = crypto.decrypt(msgBytes)
+        print('\n', msgBytes)
         if kill_bool:
             break
 
 
 def clientSide(address):
     global cont_client, kill_var, kill_bool, crypto
+    start = perf_counter()
     while True:
         if cont_client == 0:
             msgSend = input("Name: ")
@@ -52,6 +46,8 @@ def clientSide(address):
         cont_client += 1
         if kill_bool:
             break
+    finish = perf_counter()
+    print(f'\033[1:33m Você permaneceu {round(finish-start, 2)}s online no servidor!')
 
 
 cont_client = 0
@@ -61,12 +57,13 @@ kill_bool = False
 #Local machine
 HOST = getIP()
 PORT = 12000  # Porta desejada
-BUFFSIZE = 4096
+BUFFSIZE = 10240
 ADDR = (HOST, PORT)
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 ClientSideThread = threading.Thread(target=clientSide, args=(ADDR,))
 ClientReciveThread = threading.Thread(target=reciveMsg)
+crypto = crypto_tolls()
 ClientSideThread.start()
 while True:
     if cont_client != 0:

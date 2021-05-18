@@ -1,7 +1,5 @@
 import socket
 import threading
-from random import randint
-from time import sleep
 
 
 def getIP():
@@ -32,8 +30,6 @@ def serverSide():
     while True:
         if len(ipA) == 0:
             print('Aguardando conexões...')
-            x = randint(1, 10000)
-            x = bytes(x)
         while True:
             try:
                 msgBytes, clientIP = server.recvfrom(BUFFSIZE)
@@ -50,8 +46,6 @@ def serverSide():
             ipB.append(clientIP[1])
             name = username(msgAnswer) + " entrou"
             print(name)
-            server.sendto(x, clientIP)
-            sleep(0.1)
             for i in range(0, len(ipA)):
                 server.sendto(name.encode('utf8'), (ipA[i], ipB[i]))
 
@@ -79,7 +73,7 @@ ipB = [] #Port
 #Local Machine
 HOST = getIP()
 PORT = 12000
-BUFFSIZE = 4096
+BUFFSIZE = 10240
 ADDR = (HOST, PORT)
 
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
