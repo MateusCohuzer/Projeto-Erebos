@@ -36,7 +36,7 @@ def serverSide():
             x = bytes(x)
         while True:
             try:
-                msgBytes, clientIP = server.recvfrom(2048)
+                msgBytes, clientIP = server.recvfrom(BUFFSIZE)
                 break
             except:
                 pass
