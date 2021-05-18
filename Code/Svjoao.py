@@ -15,15 +15,15 @@ def format(msg, names, ipA, ipB, clientIP):
         if ipA[i] == clientIP[0] and ipB[i] == clientIP[1]:
             msgFormat += names[i] + ': '
             break
-    for i in range(1, len(msg)):
-        if i != 0:
-            msgFormat += msg[i]
+    msgFormat = msgFormat + msg[0:len(msg)]
     return msgFormat
 
 
 def serverSide():
     global names, ipA, ipB, msgFormat
     while True:
+        if len(ipA) == 0:
+            print('Aguardando conexões...')
         while True:
             try:
                 msgBytes, clientIP = server.recvfrom(2048)
@@ -70,7 +70,6 @@ ADDR = (HOST, PORT)
 
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server.bind(ADDR)
-print('Aguardando conexões...')
 ServerSideThread = threading.Thread(target=serverSide())
 ServerSideThread.start()
 ServerSideThread.join()
