@@ -1,7 +1,7 @@
 # EXECUTAR COM UMA IDE DEDICADA (VSCODE, PYCHARM, ATOM...) PARA UMA PERFORMANCE INTEGRAL
 import socket
 import threading
-from time import sleep
+from time import perf_counter, sleep
 from random import randint
 from cryptography.fernet import Fernet # CMD/Linux Command: $pip install cryptography
 
@@ -37,6 +37,7 @@ def clientSide(address):
     while True:
         if cont == 0:
             name = input("Name: ")
+            start = perf_counter()
             name = f'\033[1;3{randint(1, 6)}m{name}\033[m'
             msg = f'\033[1;36m>>ENTROU \033[m'
             token = '0'
@@ -54,6 +55,8 @@ def clientSide(address):
         client.sendto(msgsend.encode('utf8'), address)
         cont += 1
         if kill_bool:
+            finish = perf_counter()
+            print(f'O usuário permaneceu online por {round((finish-start), 2)} segundos')
             break
 
 
@@ -61,7 +64,7 @@ name = ''
 cont = 0
 kill_var = '/exit'
 kill_bool = False
-BUFFSIZE = 16384
+BUFFSIZE = 4096
 HOST = getIP() #IPv4
 PORT = 12000  # Porta desejada
 ADDR = (HOST, PORT)
