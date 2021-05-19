@@ -56,7 +56,7 @@ def clientSide(address):
         cont += 1
         if kill_bool:
             finish = perf_counter()
-            print(f'O usuário permaneceu online por {round((finish-start), 2)} segundos')
+            print(f'\033[1;33mO usuário permaneceu online por {round((finish-start), 2)} segundos')
             break
 
 
