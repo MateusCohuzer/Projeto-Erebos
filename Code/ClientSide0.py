@@ -1,4 +1,4 @@
-# EXECUTAR COM PYCHARM PARA VER OS NOMES COLORIDOS
+# EXECUTAR COM UMA IDE DEDICADA (VSCODE, PYCHARM, ATOM...) PARA UMA PERFORMANCE INTEGRAL
 import socket
 import threading
 from time import sleep
@@ -49,7 +49,7 @@ def clientSide(address):
                 kill_bool = True
                 token = '2'
         decryptedmsg = format(msg)
-        encryptedmsg =  f' {crypto.encrypt(bytes(decryptedmsg.encode("utf8"))).decode("utf8")}'
+        encryptedmsg = f' {crypto.encrypt(bytes(decryptedmsg.encode("utf8"))).decode("utf8")}'
         msgsend = encryptedmsg + token
         client.sendto(msgsend.encode('utf8'), address)
         cont += 1
