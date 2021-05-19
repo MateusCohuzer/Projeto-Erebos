@@ -39,7 +39,7 @@ def serverSide():
 
 ipA = []
 ipB = []
-BUFFSIZE = 10240
+BUFFSIZE = 16384
 HOST = ''
 PORT = 12000
 ADDR = (HOST, PORT)
