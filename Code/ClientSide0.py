@@ -43,7 +43,7 @@ def clientSide(address):
             token = '0'
         else:
             sleep(0.0001)
-            msg = input('MSG: ')
+            msg = input()
             token = '1'
             if msg == kill_var:
                 msg = f'\033[1;31m>>USUÁRIO SE DESCONECTOU \033[m'
