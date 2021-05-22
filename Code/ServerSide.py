@@ -37,6 +37,7 @@ def serverSide():
                         break
         print(msgAnswer)
 
+
 ipA = []
 ipB = []
 BUFFSIZE = 4096
